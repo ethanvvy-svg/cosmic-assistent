@@ -1,0 +1,6 @@
+{
+  "name": "COSMIC - JARVIS Voice Assistant",
+  "description": "An ultra-powerful voice-activated JARVIS-level assistant that hears your questions, controls everyday online tasks, weather, timers, and searches.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
