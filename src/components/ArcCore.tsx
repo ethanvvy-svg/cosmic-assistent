@@ -1,12 +1,13 @@
 import React from 'react';
-import { CosmicState } from '../types';
-import { Mic, MicOff, Volume2, Sparkles, Cpu, AlertTriangle } from 'lucide-react';
+import { CosmicState, OperatingMode } from '../types';
+import { Mic, MicOff, Volume2, Sparkles, Cpu, AlertTriangle, Zap } from 'lucide-react';
 
 interface ArcCoreProps {
   state: CosmicState;
   wakeWordEnabled: boolean;
   onCoreClick: () => void;
   onToggleWakeWord: () => void;
+  operatingMode?: OperatingMode;
 }
 
 export const ArcCore: React.FC<ArcCoreProps> = ({
@@ -14,9 +15,62 @@ export const ArcCore: React.FC<ArcCoreProps> = ({
   wakeWordEnabled,
   onCoreClick,
   onToggleWakeWord,
+  operatingMode = 'normal',
 }) => {
-  // Color configuration depending on state
+  const isSpecific = operatingMode === 'specific';
+
+  // Color configuration depending on state and active protocol
   const getThemeColors = () => {
+    if (isSpecific) {
+      switch (state) {
+        case 'listening':
+          return {
+            coreGlow: 'from-rose-500 to-red-400',
+            borderGlow: 'rgba(239, 68, 68, 0.9)',
+            ringColor: '#ef4444',
+            pulseSpeed: 'animate-ping duration-1000',
+            statusText: 'PROTOCOL RED // LISTENING...',
+            textColor: 'text-rose-400',
+          };
+        case 'thinking':
+          return {
+            coreGlow: 'from-red-600 to-amber-500',
+            borderGlow: 'rgba(220, 38, 38, 0.95)',
+            ringColor: '#dc2626',
+            pulseSpeed: 'animate-spin duration-500',
+            statusText: 'MAXIMUM COMPUTE THROUGHPUT ACTIVE...',
+            textColor: 'text-red-400',
+          };
+        case 'speaking':
+          return {
+            coreGlow: 'from-red-500 to-orange-400',
+            borderGlow: 'rgba(239, 68, 68, 0.9)',
+            ringColor: '#ef4444',
+            pulseSpeed: 'animate-pulse duration-500',
+            statusText: 'TRANSMITTING TACTICAL SYNTHESIS...',
+            textColor: 'text-rose-400',
+          };
+        case 'error':
+          return {
+            coreGlow: 'from-rose-700 to-red-600',
+            borderGlow: 'rgba(244, 63, 94, 0.9)',
+            ringColor: '#f43f5e',
+            pulseSpeed: 'animate-pulse',
+            statusText: 'SECURITY INTERFERENCE DETECTED',
+            textColor: 'text-rose-400',
+          };
+        default:
+          return {
+            coreGlow: 'from-rose-600 via-red-500 to-amber-600',
+            borderGlow: 'rgba(239, 68, 68, 0.85)',
+            ringColor: '#ef4444',
+            pulseSpeed: '',
+            statusText: wakeWordEnabled ? 'PROTOCOL RED ARMED ("Hey Cosmic")' : 'PROTOCOL RED STANDBY',
+            textColor: 'text-red-400',
+          };
+      }
+    }
+
     switch (state) {
       case 'listening':
         return {
